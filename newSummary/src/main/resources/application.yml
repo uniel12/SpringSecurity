@@ -1,0 +1,71 @@
+server:
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+      force-response: true
+  port: 8081
+
+spring:
+  # 코드 변경시 재부팅
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  # DB 접속 정보 설정
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://project-db-campus.smhrd.com:3307/BIG_news_23?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: BIG_news_23
+    password: news1
+  data:
+    mongodb:
+      uri:  mongodb://bignews:news@43.201.59.116:27017/newsummary?authSource=admin&authMechanism=SCRAM-SHA-1
+      # uri : mongodb://bignews:news@43.201.59.116:27017/?authMechanism=DEFAULT
+    
+  # JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+         format_sql:true #sql 보기 편하게 해줌
+#         show-sql: true
+  profiles:
+    include: oauth
+ # OAuth 로그인
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 386273532123-3bljq9l3e9i2gvlb6ht5bqjt953i21j6.apps.googleusercontent.com
+            client-secret: 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
+            scope: email, profile
+            redirect-uri: http://localhost:8081/login/oauth2/code/google
+            
+          kakao:
+            client-id:  960bb59557c16e7281949a657eefae7f  # a5336752ae75dfa19b52019c374a13c6
+            client-secret: SlaZCoBLByQHgWYWfBj3RdG3oFr6Xeqz #5uaGOpRny46DQLr7YO2JdvYkcbXQX7vj 
+            scope:
+              - profile_image
+              - profile_nickname
+              - account_email
+            authorization-grant-type: authorization_code
+            redirect-uri: http://localhost:8081/login/oauth2/code/kakao
+            client-name: Kakao
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+logging.level:  #띄어쓰기 없음
+  '[org.hibernate.SQL]': debug   
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
